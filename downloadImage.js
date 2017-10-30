@@ -35,11 +35,3 @@ function downloadImage(uri, filename) {
   request(uri).pipe(fs.createWriteStream(filename));
   console.log(`${filename} download done`);
 }
-
-// downloadImage(imageUrl, filename, () => {
-//   console.log('download image done');
-// });
-//
-// function downloadImage(uri, filename, callback) {
-//   request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
-// }
