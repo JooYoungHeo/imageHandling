@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const request = require('request');
 
 let imageUrlList = [
@@ -9,12 +10,19 @@ let imageUrlList = [
   'https://cdn.pixabay.com/photo/2017/10/25/16/54/african-lion-2888519_960_720.jpg'
 ];
 
-for (let i in imageUrlList) {
-  let item = imageUrlList[i];
-  let filename = `${convertUrlToFilename(item)}.jpg`;
+let dirname = './images';
 
-  downloadImage(item, filename);
-}
+fs.exists(dirname, flag => {
+  if (!flag) fs.mkdirSync(dirname);
+
+  for (let i in imageUrlList) {
+    let item = imageUrlList[i];
+    let filename = `${convertUrlToFilename(item)}.jpg`;
+    let filePath = path.join(dirname, filename);
+
+    downloadImage(item, filePath);
+  }
+});
 
 function convertUrlToFilename(url) {
   let splitList = url.split('/');
@@ -25,6 +33,7 @@ function convertUrlToFilename(url) {
 
 function downloadImage(uri, filename) {
   request(uri).pipe(fs.createWriteStream(filename));
+  console.log(`${filename} download done`);
 }
 
 // downloadImage(imageUrl, filename, () => {
